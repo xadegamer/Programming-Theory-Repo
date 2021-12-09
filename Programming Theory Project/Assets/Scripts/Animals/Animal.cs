@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public abstract class Animal : MonoBehaviour
 {
-    public string animalName;
+    public string animalName { get; private set; }// ENCAPSULATION
     public float Speed = 3;
     public float height = 3;
 
@@ -26,12 +26,17 @@ public abstract class Animal : MonoBehaviour
     {
         if (m_Target != null)
         {
-            float distance = Vector3.Distance(m_Target.transform.position, transform.position);
-            if (distance < 2.0f)
-            {
-                m_Agent.isStopped = true;
-                CageInRange();
-            }
+            CheckCageDistance();// ABSTRACTION
+        }
+    }
+
+    public void CheckCageDistance()
+    {
+        float distance = Vector3.Distance(m_Target.transform.position, transform.position);
+        if (distance < 2.0f)
+        {
+            m_Agent.isStopped = true;
+            CageInRange();
         }
     }
 
@@ -40,7 +45,7 @@ public abstract class Animal : MonoBehaviour
         animatorHandler.OnSelect();
     }
 
-    public virtual void GoTo(Cage target)
+    public virtual void GoTo(Cage target)// POLYMORPHISM
     {
         m_Target = target;
 
@@ -51,7 +56,7 @@ public abstract class Animal : MonoBehaviour
         }
     }
 
-    public virtual void GoTo(Vector3 position)
+    public virtual void GoTo(Vector3 position)// POLYMORPHISM
     {
         //we don't have a target anymore if we order to go to a random point.
         m_Target = null;
